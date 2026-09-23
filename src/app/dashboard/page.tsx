@@ -2,7 +2,9 @@ import { redirect } from "next/navigation";
 import { getSession } from "@/lib/session";
 import { getUserPreferences } from "@/lib/preferences";
 import { logoutAction } from "@/app/actions/authActions";
+import { getTransactions, getTransactionSummary } from "@/app/actions/transactionActions";
 import PreferenceForm from "./PreferenceForm";
+import TransactionManager from "./TransactionManager";
 
 export default async function DashboardPage() {
   const session = await getSession();
@@ -11,6 +13,19 @@ export default async function DashboardPage() {
   if (!session) {
     redirect("/login");
   }
+
+  const [transactionsRes, summaryRes] = await Promise.all([
+    getTransactions("ALL"),
+    getTransactionSummary(),
+  ]);
+
+  const initialTransactions = transactionsRes.success && transactionsRes.data ? transactionsRes.data : [];
+  const initialSummary = summaryRes.success && summaryRes.data ? summaryRes.data : {
+    totalIncome: 0,
+    totalExpense: 0,
+    balance: 0,
+    totalTransactions: 0,
+  };
 
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 font-sans p-6 sm:p-12">
@@ -119,6 +134,12 @@ export default async function DashboardPage() {
             </div>
           </div>
         </div>
+
+        {/* Transaction Management Section (Programmer 2) */}
+        <TransactionManager
+          initialTransactions={initialTransactions}
+          initialSummary={initialSummary}
+        />
 
         {/* Preference Form Section */}
         <PreferenceForm initialPreferences={preferences} />
