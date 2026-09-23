@@ -1,176 +1,237 @@
-# Panduan Setup Project Next.js 16 & PostgreSQL 18
-
-Dokumentasi lengkap untuk inisialisasi, konfigurasi, dan menjalankan project web modern menggunakan **Next.js (App Router)** dan database **PostgreSQL** dengan **Prisma ORM 7**.
-
----
-
-## 🚀 Tech Stack
-
-- **Framework**: [Next.js 16](https://nextjs.org/) (App Router, Server Actions, React 19)
-- **Language & Styling**: TypeScript, Tailwind CSS v4
-- **Database**: PostgreSQL 18 (Local Windows Service di port `5432`)
-- **ORM / Data Layer**: [Prisma ORM 7](https://www.prisma.io/) dengan `@prisma/adapter-pg`
+# 💰 HematKu — Student Expense Tracker & Financial Management System
+> **Dokumen Spesifikasi Kebutuhan Perangkat Lunak (Software Requirements Specification — SRS)**  
+> Mata Kuliah: Pengembangan Perangkat Lunak Berorientasi Komponen (PPK) — Semester 5
 
 ---
 
-## 🐘 Bagian 1: Panduan Setup PostgreSQL di Windows
+## 👥 Tim Pengembang & Struktur Organisasi
 
-### 1. Unduh dan Instalasi
-1. Download installer resmi PostgreSQL untuk Windows dari [EnterpriseDB](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads) (versi 16 atau 18).
-2. Jalankan installer `.exe` dan tentukan komponen yang diinstal:
-   - ✅ **PostgreSQL Server** *(Wajib)*
-   - ✅ **pgAdmin 4** *(Direkomendasikan — aplikasi GUI desktop untuk melihat tabel/data)*
-   - ⬜ **Stack Builder** *(Boleh di-uncheck / lewati)*
-   - ✅ **Command Line Tools** *(Wajib — menyertakan `psql`)*
-3. **Password Superuser**:
-   - Masukkan password untuk user default `postgres` (misal: `BambangStoner26`).
-   - **PENTING**: Catat password ini karena wajib dimasukkan ke file `.env` di Next.js.
-4. **Port**:
-   - Gunakan port standar: `5432`.
-5. **Locale**:
-   - Pilih `[Default locale]`.
-6. Selesaikan proses instalasi. Jika di akhir muncul popup *Stack Builder*, klik **Cancel**.
+| No | Peran / Jabatan | Nama Lengkap | NIM | Tanggung Jawab Utama |
+|:--:|:---|:---|:---:|:---|
+| 1 | **Project Manager (PM)** | **Fauzan (pojann26)** | *[NIM PM]* | Manajemen proyek, arsitektur sistem, delegasi tugas, review Pull Request (PR), dan integrasi akhir. |
+| 2 | **Programmer 1** | **Quinta Aurabiansyah** | 24060124120016 | Modul Autentikasi, Session Management, Cookies, dan Middleware Route Protection. |
+| 3 | **Programmer 2** | **Naufal Dwi Yusmawan** | 24060124130075 | Modul Manajemen Transaksi (CRUD), Filter Transaksi, Server Actions, dan Database Query (Prisma). |
+| 4 | **Programmer 3** | **Aditya Sultonul Ulya** | 24060124120006 | Modul Dashboard, Ringkasan Saldo/Keuangan, Komponen UI/UX interaktif, dan Manajemen Preferensi Pengguna. |
 
-### 2. Memeriksa Layanan PostgreSQL
-PostgreSQL akan otomatis berjalan di latar belakang sebagai Windows Service setiap kali komputer dinyalakan. Untuk mengecek statusnya via PowerShell:
+---
 
-```powershell
-Get-Service *postgres*
+## 📌 1. Deskripsi & Ringkasan Proyek
+
+### 1.1 Latar Belakang
+Mahasiswa sering menghadapi kendala dalam mengelola keuangan bulanan akibat tidak adanya pencatatan transaksi pemasukan dan pengeluaran yang terstruktur. Aplikasi **HematKu** hadir sebagai solusi berbasis web yang ringan, cepat, dan intuitif untuk membantu mahasiswa memantau kondisi finansial pribadi secara mandiri.
+
+### 1.2 Tujuan Sistem
+- Menyediakan sistem pencatatan keuangan pribadi (*personal expense tracker*) yang mudah digunakan oleh mahasiswa.
+- Memberikan visibilitas langsung terhadap status keuangan (*Total Saldo*, *Total Pemasukan*, dan *Total Pengeluaran*).
+- Menjaga kerahasiaan dan integritas data keuangan antar pengguna dengan mekanisme autentikasi dan isolasi data (*authorization*) yang ketat.
+- Menerapkan arsitektur web modern berbasis **Next.js (App Router)**, **Prisma ORM**, dan database **PostgreSQL**.
+
+---
+
+## 🎯 2. Kebutuhan Fungsional (Functional Requirements)
+
+Sistem wajib mengimplementasikan 9 fitur utama berikut:
+
+| ID Kebutuhan | Nama Fitur | Deskripsi Kebutuhan |
+|:---|:---|:---|
+| **FR-001** | **Registrasi Akun (Register)** | Pengguna dapat mendaftarkan akun baru dengan menginput **Nama Lengkap**, **Email unik**, dan **Password**. Password harus di-hash (enkripsi) sebelum disimpan ke PostgreSQL. |
+| **FR-002** | **Autentikasi (Login)** | Pengguna yang terdaftar dapat masuk menggunakan **Email** dan **Password**. Sistem memvalidasi kredensial dan menolak akses jika data tidak cocok. |
+| **FR-003** | **Manajemen Sesi (Session)** | Sistem mempertahankan status login pengguna menggunakan session berbasis token/cookie yang aman. Halaman privat (seperti Dashboard) otomatis dilindungi oleh Next.js Middleware. Jika pengguna belum login, akses akan dialihkan (*redirect*) ke halaman Login. |
+| **FR-004** | **Dashboard Finansial** | Menampilkan antarmuka utama yang menyajikan:<br>1. Sapaan nama pengguna yang sedang aktif.<br>2. **Saldo Akhir** (Total Pemasukan - Total Pengeluaran).<br>3. Ringkasan **Total Pemasukan** (*Total Income*).<br>4. Ringkasan **Total Pengeluaran** (*Total Expense*).<br>5. Daftar riwayat transaksi keuangan terbaru. |
+| **FR-005** | **Manajemen Transaksi (CRUD)** | Pengguna dapat mengelola transaksi keuangan secara penuh:<br>- **Create**: Menambah transaksi baru (Judul, Jumlah Nominal, Kategori/Catatan, Tanggal, dan Jenis: Pemasukan / Pengeluaran).<br>- **Read**: Melihat daftar seluruh transaksi.<br>- **Update**: Mengubah data transaksi yang telah dibuat.<br>- **Delete**: Menghapus transaksi dari database. |
+| **FR-006** | **Filter Transaksi** | Pengguna dapat memfilter daftar transaksi di dashboard berdasarkan jenisnya:<br>- Tampilkan **Semua** Transaksi.<br>- Tampilkan Hanya **Pemasukan** (*Income*).<br>- Tampilkan Hanya **Pengeluaran** (*Expense*). |
+| **FR-007** | **Manajemen Cookies** | Sistem memanfaatkan HTTP Cookies untuk:<br>1. Menyimpan sesi login pengguna (`session_token`).<br>2. Menyimpan minimal satu preferensi pengguna (misal: preferensi tema **Dark Mode / Light Mode** atau preferensi default filter transaksi). |
+| **FR-008** | **Otorisasi & Isolasi Data (Authorization)** | Setiap transaksi wajib berelasi langsung dengan `userId`. Pengguna **hanya dapat melihat, mengedit, dan menghapus transaksi miliknya sendiri**. Percobaan akses atau manipulasi data milik pengguna lain harus ditolak (*Forbidden*). |
+| **FR-009** | **Terminasi Sesi (Logout)** | Pengguna dapat keluar dari akun. Sistem akan menghapus cookie sesi dan mengarahkan kembali ke halaman Login. |
+
+---
+
+## 🛡️ 3. Kebutuhan Non-Fungsional (Non-Functional Requirements)
+
+| Kategori | Spesifikasi |
+|:---|:---|
+| **Keamanan (Security)** | - Password pengguna di-hash menggunakan algoritma yang aman (misal: `bcryptjs`).<br>- Cookie sesi menggunakan atribut `HttpOnly`, `SameSite=Lax`, dan `Secure` (pada production).<br>- Proteksi route menggunakan Next.js Middleware. |
+| **Integritas Data (Data Integrity)** | Hubungan relasional antar entitas (`User` 1 — N `Transaction`) terjamin menggunakan Foreign Key dan Cascade Delete di PostgreSQL. |
+| **Performa (Performance)** | - Pengambilan data dan mutasi menggunakan Next.js Server Components & Server Actions.<br>- Load time halaman di bawah 2 detik pada jaringan lokal. |
+| **Usabilitas & Responsivitas** | Antarmuka bersih (*clean*), ramah pengguna (*user-friendly*), dan responsif baik pada layar desktop maupun smartphone menggunakan Tailwind CSS. |
+
+---
+
+## 🗄️ 4. Perancangan Basis Data (Database Design)
+
+### 4.1 Entity Relationship Diagram (ERD)
+
+```mermaid
+erDiagram
+    USER ||--o{ TRANSACTION : "memiliki"
+    
+    USER {
+        string id PK "cuid / uuid"
+        string name "Nama Lengkap"
+        string email UK "Email unik"
+        string password "Hashed Password"
+        datetime createdAt "Waktu Dibuat"
+        datetime updatedAt "Waktu Diperbarui"
+    }
+
+    TRANSACTION {
+        string id PK "cuid / uuid"
+        string title "Keterangan/Judul Transaksi"
+        float amount "Nominal Transaksi"
+        string type "INCOME | EXPENSE"
+        string category "Kategori (cth: Makanan, Uang Saku, dll)"
+        datetime date "Tanggal Transaksi"
+        string userId FK "ID Pemilik Akun"
+        datetime createdAt "Waktu Dibuat"
+        datetime updatedAt "Waktu Diperbarui"
+    }
 ```
-*(Pastikan statusnya **Running**)*.
 
-### 3. Mengakses Database via GUI
-- **pgAdmin 4 (Desktop)**:
-  - Buka aplikasi **pgAdmin 4** dari Start Menu.
-  - Masukkan master password saat diminta.
-  - Di panel kiri: Klik **Servers** > **PostgreSQL 18** > **Databases**.
-- **Prisma Studio (Browser)**:
-  - Alternatif yang jauh lebih ringan dan modern tanpa perlu membuka pgAdmin (lihat di Bagian 3).
+### 4.2 Skema Prisma (`prisma/schema.prisma`)
+Rancangan model yang akan digunakan di dalam project:
+
+```prisma
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+model User {
+  id           String        @id @default(cuid())
+  name         String
+  email        String        @unique
+  password     String
+  transactions Transaction[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Transaction {
+  id        String          @id @default(cuid())
+  title     String
+  amount    Float
+  type      TransactionType
+  category  String          @default("Umum")
+  date      DateTime        @default(now())
+  userId    String
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+
+  @@index([userId])
+}
+```
 
 ---
 
-## 💻 Bagian 2: Panduan Setup Project Next.js
+## 🔄 5. Alur Kerja Pengguna (User Flow)
 
-### 1. Clone / Buka Direktori Project
-Buka terminal pada folder project ini:
-```powershell
-cd "c:\Users\fauza\OneDrive\Documents\Kuliah\SEMESTER 5 - PRAKTIKUM\PPK\NextJS"
+```mermaid
+flowchart TD
+    Start([Mulai]) --> CheckAuth{Apakah Sudah Login?}
+    CheckAuth -- Tidak --> AuthPage[Halaman Login / Register]
+    AuthPage --> SubmitAuth[Submit Form Kredensial]
+    SubmitAuth -- Sukses --> SetCookie[Set Session Cookie]
+    SetCookie --> Dashboard[Halaman Dashboard]
+    CheckAuth -- Ya --> Dashboard
+
+    Dashboard --> ViewSummary[Melihat Saldo, Total Pemasukan, Total Pengeluaran]
+    Dashboard --> FilterData[Memfilter Jenis: Semua / Pemasukan / Pengeluaran]
+    Dashboard --> CRUD[Kelola Transaksi: Tambah / Edit / Hapus]
+    CRUD --> UpdateDB[(Database PostgreSQL)]
+    UpdateDB --> Dashboard
+    
+    Dashboard --> ChangePref[Ubah Preferensi Tema / Tampilan]
+    ChangePref --> SavePrefCookie[Simpan ke Cookie Preferensi]
+
+    Dashboard --> Logout[Klik Tombol Logout]
+    Logout --> ClearCookie[Hapus Session Cookie]
+    ClearCookie --> AuthPage
 ```
 
-### 2. Install Dependencies
-Jika baru pertama kali mendownload project atau setelah clone dari repository:
-```powershell
+---
+
+## 📋 6. Matriks Pembagian Tugas Tim (WBS / Task Delegation)
+
+Sebagai pedoman pengerjaan antar anggota tim:
+
+### 1. Project Manager (Fauzan / pojann26)
+- [x] Inisialisasi arsitektur repository dan konfigurasi database PostgreSQL + Prisma ORM 7.
+- [x] Penyusunan dokumen SRS (*Software Requirements Specification*).
+- [ ] Manajemen branching Git (`main`, `dev`, `feature/*`), supervisi kode, dan review Pull Request (PR).
+- [ ] Pengujian menyeluruh (*End-to-End Testing*) dan pemastian kepatuhan terhadap 9 requirement wajib.
+
+### 2. Programmer 1 (Quinta Aurabiansyah — 24060124120016)
+- [ ] **Modul Autentikasi**: Implementasi halaman dan logika Register (`nama`, `email`, `password`) dengan enkripsi password.
+- [ ] **Modul Login & Logout**: Validasi user, penanganan session login, dan penghapusan session saat logout.
+- [ ] **Middleware & Session**: Pembuatan Next.js Middleware untuk proteksi halaman privat (*route protection*).
+- [ ] **Cookies**: Pengelolaan cookie sesi aman (*HttpOnly*) dan cookie preferensi pengguna.
+
+### 3. Programmer 2 (Naufal Dwi Yusmawan — 24060124130075)
+- [ ] **Prisma Schema & Migrasi**: Implementasi model `User` dan `Transaction` ke PostgreSQL (`npx prisma db push`).
+- [ ] **Server Actions Transaksi (CRUD)**: Logika penambahan, pembacaan, pengubahan, dan penghapusan transaksi.
+- [ ] **Otorisasi (Authorization)**: Validasi kepemilikan data agar user hanya bisa memanipulasi transaksi miliknya sendiri (`userId`).
+- [ ] **Fitur Filter**: Logika filter query transaksi berdasarkan jenis `INCOME` dan `EXPENSE`.
+
+### 4. Programmer 3 (Aditya Sultonul Ulya — 24060124120006)
+- [ ] **UI/UX Dashboard**: Merancang antarmuka dashboard utama yang modern, bersih, dan responsif.
+- [ ] **Widget Finansial**: Komponen visual kartu ringkasan saldo, total pemasukan, dan total pengeluaran.
+- [ ] **Tabel & Form Transaksi**: Komponen formulir modal input/edit transaksi dan tabel riwayat transaksi.
+- [ ] **Fitur Preferensi UI**: Implementasi pergantian preferensi (misal toggle Dark/Light mode) yang tersimpan di cookies.
+
+---
+
+## 💻 7. Tech Stack
+
+- **Framework**: [Next.js 16](https://nextjs.org/) (App Router, Server Actions, Server & Client Components)
+- **Bahasa Pemrograman**: [TypeScript](https://www.typescriptlang.org/)
+- **Styling UI**: [Tailwind CSS v4](https://tailwindcss.com/)
+- **Database**: [PostgreSQL 18](https://www.postgresql.org/)
+- **ORM / Database Layer**: [Prisma ORM 7](https://www.prisma.io/) dengan `@prisma/adapter-pg`
+- **Keamanan**: `bcryptjs` (Password Hashing) & Next.js Server Cookies / Session Token
+
+---
+
+## 🚀 8. Panduan Menjalankan Proyek (Getting Started)
+
+### 1. Clone Repository & Install Dependency
+```bash
+git clone https://github.com/pojann26/Praktikum_Next.git
+cd Praktikum_Next
 npm install
 ```
 
-### 3. Konfigurasi Variabel Lingkungan (`.env`)
-Buat atau buka file `.env` di root direktori project, lalu atur variabel `DATABASE_URL`:
-
+### 2. Atur Environment Variable
+Salin file `.env.example` menjadi `.env`:
+```bash
+cp .env.example .env
+```
+Sesuaikan password PostgreSQL lokal Anda di dalam `.env`:
 ```env
 DATABASE_URL="postgresql://postgres:PASSWORD_ANDA@localhost:5432/nextjs_db?schema=public"
 ```
 
-> **Penjelasan Format URL Koneksi:**
-> - `postgres` : Username superuser default PostgreSQL.
-> - `PASSWORD_ANDA` : Password yang Anda buat saat instalasi PostgreSQL tadi.
-> - `localhost:5432` : Alamat host dan port server PostgreSQL lokal Anda.
-> - `nextjs_db` : Nama database yang akan dibuat/digunakan untuk project ini.
-> - `?schema=public` : Schema default di dalam PostgreSQL.
-
-### 4. Sinkronisasi Schema Database (Prisma DB Push)
-Jalankan perintah ini di terminal:
-```powershell
+### 3. Sinkronkan Database dengan Prisma
+Jalankan perintah berikut untuk meng-generate client dan menyinkronkan tabel ke PostgreSQL:
+```bash
+npx prisma generate
 npx prisma db push
 ```
-Prisma akan:
-1. Menghubungi PostgreSQL di laptop Anda.
-2. Otomatis membuatkan database `nextjs_db` jika belum ada.
-3. Otomatis membuatkan tabel `Student` (dan model lain yang ada di `prisma/schema.prisma`).
 
-### 5. Generate Prisma Client
-Pastikan type-definition dan query client Prisma sudah di-generate:
-```powershell
-npx prisma generate
-```
-
----
-
-## 🏃 Bagian 3: Menjalankan Aplikasi
-
-### 1. Jalankan Development Server
-```powershell
+### 4. Jalankan Server Pengembangan
+```bash
 npm run dev
 ```
-Buka browser di **[http://localhost:3000](http://localhost:3000)**.
-- Anda akan melihat antarmuka Dashboard Sistem Mahasiswa.
-- Indikator status di kanan atas akan berwarna hijau: **"PostgreSQL Terhubung"**.
-- Anda bisa langsung mengisi form dan menambah/menghapus data mahasiswa secara realtime.
-
-### 2. Menjalankan Prisma Studio (GUI Visual di Browser)
-Untuk melihat dan mengelola isi tabel database secara visual melalui browser:
-```powershell
-npx prisma studio
-```
-Browser akan otomatis membuka **[http://localhost:5555](http://localhost:5555)**.
+Buka browser pada: **[http://localhost:3000](http://localhost:3000)**
 
 ---
-
-## 📁 Struktur Direktori Project
-
-```text
-NextJS/
-├── .env                       # File kredensial & connection string database
-├── prisma/
-│   └── schema.prisma          # Definisi schema database (model Student)
-├── prisma7.config.ts          # Konfigurasi Prisma 7 datasource & migrations
-├── src/
-│   ├── app/
-│   │   ├── actions.ts         # Server Actions (query database: create, read, delete, check connection)
-│   │   ├── globals.css        # Konfigurasi Tailwind CSS v4 & theme
-│   │   ├── layout.tsx         # Root layout aplikasi Next.js
-│   │   ├── page.tsx           # Server Component utama yang memuat data awal
-│   │   └── components/
-│   │       └── StudentDashboard.tsx # Client Component antarmuka interaktif & form
-│   ├── generated/
-│   │   └── prisma/            # Type-safe Prisma Client yang di-generate otomatis
-│   └── lib/
-│       └── prisma.ts          # Singleton PrismaClient instance & PostgreSQL driver adapter
-├── package.json
-└── README.md
-```
-
----
-
-## 🛠️ Panduan Menambah Model / Tabel Baru
-
-Jika di kemudian hari Anda ingin menambah tabel baru (misalnya tabel `Dosen` atau `Course`):
-
-1. Buka file [`prisma/schema.prisma`](prisma/schema.prisma) dan tambahkan model baru:
-   ```prisma
-   model Course {
-     id        Int      @id @default(autoincrement())
-     code      String   @unique
-     title     String
-     credits   Int
-     createdAt DateTime @default(now())
-   }
-   ```
-2. Jalankan perintah push schema ke PostgreSQL:
-   ```powershell
-   npx prisma db push
-   ```
-3. Generate ulang client:
-   ```powershell
-   npx prisma generate
-   ```
-4. Anda sekarang bisa mengakses tabel baru via `prisma.course.findMany()`, `prisma.course.create()`, dll. di [`src/app/actions.ts`](src/app/actions.ts).
-
----
-
-## ⚠️ Troubleshooting Umum
-
-| Masalah / Error | Penyebab | Solusi |
-| :--- | :--- | :--- |
-| `Error P1000: Authentication failed` | Username atau password di `.env` salah | Pastikan username adalah `postgres` dan password sesuai yang dibuat saat instalasi. Format: `postgresql://postgres:PASSWORD@localhost:5432/nextjs_db` |
-| Halaman web menampilkan `Database Terputus` padahal `.env` sudah diubah | Server `npm run dev` masih menyimpan cache `.env` lama | Hentikan dev server di terminal dengan menekan `Ctrl + C`, lalu jalankan kembali `npm run dev`. |
-| `Can't reach database server at localhost:5432` | Layanan PostgreSQL Windows mati | Buka PowerShell sebagai Administrator dan jalankan: `Start-Service postgresql*` |
+*Dokumentasi ini disusun oleh Project Manager sebagai acuan resmi pengerjaan proyek praktikum.*
