@@ -47,6 +47,36 @@ export interface TransactionFilters {
   endDate?: Date;
 }
 
+export type BudgetStatus = "SAFE" | "WARNING" | "EXCEEDED";
+
+export interface Budget {
+  id: string;
+  amount: number;
+  month: number; // 1 - 12
+  year: number;
+  userId: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface BudgetSummary {
+  budget: Budget | null;
+  totalBudget: number;
+  totalExpense: number;
+  remainingBudget: number;
+  usagePercentage: number;
+  status: BudgetStatus;
+  statusLabel: "Aman" | "Waspada" | "Melebihi Anggaran";
+  month: number;
+  year: number;
+}
+
+export interface SetBudgetInput {
+  amount: number;
+  month: number; // 1 - 12
+  year: number;
+}
+
 export type SessionUser = import("@/lib/session").SessionUser;
 
 export interface UserPreferences {
