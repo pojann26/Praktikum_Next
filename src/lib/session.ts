@@ -75,3 +75,45 @@ export async function getSession(): Promise<SessionUser | null> {
 
   return verifySessionToken(sessionToken);
 }
+
+// ==========================================
+// P1 Task: Budget Session Helpers
+// ==========================================
+
+/**
+ * Helper untuk mengambil userId dari sesi aktif.
+ * Mengembalikan string userId jika user terautentikasi, atau null jika tidak ada sesi.
+ */
+export async function getAuthUserId(): Promise<string | null> {
+  const session = await getSession();
+  return session?.userId || null;
+}
+
+/**
+ * Helper otentikasi ketat untuk Server Actions (Budget, Transaksi, dll).
+ * Mengembalikan userId jika valid, atau melempar Error 'Unauthorized' jika sesi tidak ditemukan/kadaluarsa.
+ */
+export async function requireAuthUserId(): Promise<string> {
+  const session = await getSession();
+  if (!session?.userId) {
+    throw new Error(
+      "Unauthorized: Sesi tidak valid atau telah berakhir. Silakan login kembali."
+    );
+  }
+  return session.userId;
+}
+
+/**
+ * Helper untuk mengambil data profil lengkap pengguna yang sedang login.
+ * Melempar error jika belum terotentikasi.
+ */
+export async function requireAuthUser(): Promise<SessionUser> {
+  const session = await getSession();
+  if (!session?.userId) {
+    throw new Error(
+      "Unauthorized: Sesi tidak valid atau telah berakhir. Silakan login kembali."
+    );
+  }
+  return session;
+}
+

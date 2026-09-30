@@ -7,7 +7,7 @@ const SECRET_KEY = new TextEncoder().encode(
 );
 
 // Protected routes requiring active login session
-const protectedRoutes = ["/dashboard"];
+const protectedRoutes = ["/dashboard", "/budget"];
 
 // Auth routes accessible only to guests
 const authRoutes = ["/login", "/register"];
@@ -48,5 +48,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/login", "/register"],
+  matcher: ["/dashboard/:path*", "/budget/:path*", "/login", "/register"],
 };
