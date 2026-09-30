@@ -21,6 +21,7 @@ model User {
   email        String        @unique
   password     String
   transactions Transaction[]
+  budgets      Budget[]
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
 }
@@ -37,6 +38,20 @@ model Transaction {
   createdAt DateTime        @default(now())
   updatedAt DateTime        @updatedAt
 
+  @@index([userId])
+}
+
+model Budget {
+  id        String   @id @default(cuid())
+  amount    Float
+  month     Int      // 1 - 12
+  year      Int
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, month, year])
   @@index([userId])
 }
 
