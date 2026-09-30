@@ -33,25 +33,19 @@ export default async function DashboardPage() {
       <div className="space-y-8">
         <DashboardHeader user={session as SessionUser} />
         
-        {/* 2-Column Layout: Left (2/3) and Right (1/3) */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column: Profile, Financial Widgets, Transaction Manager */}
-          <div className="lg:col-span-2 space-y-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
             <UserSessionCard user={session as SessionUser} />
-            
-            <TransactionManager
-              initialTransactions={initialTransactions}
-              initialSummary={initialSummary}
-            />
           </div>
-          
-          {/* Right Column: Security Card, Cookie Settings */}
-          <div className="space-y-8">
-            <CookieStatusCard />
-            
-            <PreferenceForm initialPreferences={preferences} />
-          </div>
+          <CookieStatusCard />
         </div>
+        
+        <TransactionManager
+          initialTransactions={initialTransactions}
+          initialSummary={initialSummary}
+        />
+        
+        <PreferenceForm initialPreferences={preferences} />
       </div>
     </DashboardLayout>
   );

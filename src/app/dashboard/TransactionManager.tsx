@@ -1,11 +1,12 @@
 "use client";
 
 import { useState, useTransition, useMemo } from "react";
-import { motion } from "framer-motion";
-import { Plus, ListFilter } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Plus, ListFilter, LayoutGrid } from "lucide-react";
 import {
   TransactionItem,
   TransactionSummary,
+  FilterType,
   createTransaction,
   updateTransaction,
   deleteTransaction,

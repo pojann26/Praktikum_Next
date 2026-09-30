@@ -4,7 +4,7 @@ import { useState, useTransition } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { updatePreferencesAction } from "@/app/actions/authActions";
 import { UserPreferences } from "@/lib/preferences";
-import { Palette, Save } from "lucide-react";
+import { Palette, Globe, Save } from "lucide-react";
 
 interface Toast {
   id: string;
@@ -46,59 +46,59 @@ export default function PreferenceForm({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.6, duration: 0.5 }}
-      className="glass-card ml-auto w-full max-w-xl p-5 sm:p-6"
+      className="glass-card p-6"
     >
-      <div className="mb-6 border-b border-white/10 pb-5">
+      <div className="flex items-center justify-between mb-4">
         <div>
-          <h2 className="flex items-center gap-2 text-lg font-bold text-white">
-            <Palette size={18} className="text-teal-300" />
-            Cookie Settings
+          <h2 className="text-lg font-bold text-white flex items-center gap-2">
+            <Palette size={18} className="text-indigo-400" />
+            Pengaturan Cookie Preferensi Pengguna
           </h2>
-          <p className="mt-1 text-xs leading-relaxed text-zinc-400">
-            Atur preferensi tampilan dan bahasa. Pilihan ini disimpan di cookie browser.
+          <p className="text-xs text-zinc-400 mt-1">
+            Preferensi ini disimpan di cookie browser (user_preference)
           </p>
         </div>
       </div>
 
-      <div className="grid gap-4">
+      <div className="grid gap-5 md:grid-cols-2">
         <div>
-          <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-zinc-400">
+          <label className="mb-2 block text-sm font-bold uppercase tracking-wider text-zinc-400">
             Tema Tampilan
           </label>
           <select
             value={theme}
             onChange={(e) => setTheme(e.target.value as "dark" | "light" | "system")}
-            className="w-full rounded-xl border border-white/15 bg-white/[0.08] px-4 py-3 text-sm font-medium text-white shadow-inner shadow-black/10 backdrop-blur-md transition hover:border-teal-300/40 focus:border-teal-300 focus:outline-none focus:ring-2 focus:ring-teal-300/20"
+            className="w-full rounded-xl border border-white/10 bg-white/10 px-4 py-2.5 text-white text-sm transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
           >
-            <option value="dark" className="bg-slate-900">🌙 Dark Mode (Gelap)</option>
-            <option value="light" className="bg-slate-900">☀️ Light Mode (Terang)</option>
-            <option value="system" className="bg-slate-900">💻 System Default</option>
+            <option value="dark">🌙 Dark Mode (Gelap)</option>
+            <option value="light">☀️ Light Mode (Terang)</option>
+            <option value="system">💻 System Default</option>
           </select>
         </div>
 
         <div>
-          <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-zinc-400">
+          <label className="mb-2 block text-sm font-bold uppercase tracking-wider text-zinc-400">
             Bahasa Pengantar
           </label>
           <select
             value={language}
             onChange={(e) => setLanguage(e.target.value as "id" | "en")}
-            className="w-full rounded-xl border border-white/15 bg-white/[0.08] px-4 py-3 text-sm font-medium text-white shadow-inner shadow-black/10 backdrop-blur-md transition hover:border-purple-300/40 focus:border-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-300/20"
+            className="w-full rounded-xl border border-white/10 bg-white/10 px-4 py-2.5 text-white text-sm transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
           >
-            <option value="id" className="bg-slate-900">ID Bahasa Indonesia</option>
-            <option value="en" className="bg-slate-900">EN English</option>
+            <option value="id">ID Bahasa Indonesia</option>
+            <option value="en">EN English</option>
           </select>
         </div>
       </div>
 
-      <div className="mt-6 flex justify-end border-t border-white/10 pt-5">
+      <div className="mt-6 flex justify-end">
         <button
           onClick={handleSave}
           disabled={isPending}
-          className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-teal-400 to-purple-500 px-5 py-3 text-sm font-bold text-slate-950 shadow-lg shadow-teal-500/20 transition hover:from-teal-300 hover:to-purple-400 disabled:cursor-not-allowed disabled:opacity-50"
+          className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-6 py-2.5 font-semibold text-white transition hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <Save size={16} />
-          {isPending ? "Menyimpan..." : "Save Settings"}
+          Simpan Preferensi
         </button>
       </div>
 
