@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Transaction, TransactionFormData, TransactionType } from "@/types";
+import { Transaction, TransactionFormData } from "@/types";
 import { TRANSACTION_CATEGORIES } from "@/lib/mock-data";
 
 interface TransactionFormProps {

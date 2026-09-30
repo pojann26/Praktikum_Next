@@ -1,0 +1,34 @@
+{
+  "id": "dashboard-redesign-06",
+  "seq": "06",
+  "title": "Update FinancialWidget styling with new cards, values, and chart layout",
+  "status": "pending",
+  "depends_on": ["01", "02"],
+  "parallel": true,
+  "suggested_agent": "OpenFrontendSpecialist",
+  "context_files": [
+    "AGENTS.md",
+    "README.md",
+    "src/components/README.md",
+    ".opencode/context/ui/web/ui-styling-standards.md",
+    ".opencode/context/core/workflows/design-iteration-overview.md",
+    ".opencode/context/core/workflows/design-iteration-stage-implementation.md"
+  ],
+  "reference_files": [
+    "src/components/dashboard/FinancialWidget.tsx"
+  ],
+  "acceptance_criteria": [
+    "Financial widgets grid displays Saldo Awal, Total Pemasukan, Total Pengeluaran",
+    "Saldo Awal includes chart visualization",
+    "Card styling uses glassmorphism with borders",
+    "Labels are small, uppercase, muted gray",
+    "Values are large with appropriate colors (green for income, red for expense)",
+    "Proper spacing and rounded corners applied",
+    "Uses new teal/purple color scheme",
+    "Component maintains existing data props",
+    "TypeScript types preserved"
+  ],
+  "deliverables": [
+    "src/components/dashboard/FinancialWidget.tsx"
+  ]
+}

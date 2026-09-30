@@ -1,0 +1,33 @@
+{
+  "id": "dashboard-redesign-05",
+  "seq": "05",
+  "title": "Redesign CookieStatusCard as security card with teal accent",
+  "status": "pending",
+  "depends_on": ["04"],
+  "parallel": false,
+  "suggested_agent": "OpenFrontendSpecialist",
+  "context_files": [
+    "AGENTS.md",
+    "README.md",
+    "src/components/README.md",
+    ".opencode/context/ui/web/ui-styling-standards.md",
+    ".opencode/context/core/workflows/design-iteration-overview.md",
+    ".opencode/context/core/workflows/design-iteration-stage-implementation.md"
+  ],
+  "reference_files": [
+    "src/components/dashboard/DashboardHeader.tsx"
+  ],
+  "acceptance_criteria": [
+    "Card styled as Security/Proksi Kunci card",
+    "Teal accent color prominently featured",
+    "Lock icon displayed from lucide-react",
+    "Action button included with proper styling",
+    "Glassmorphism effect with rounded borders",
+    "Component positioned for right sidebar placement",
+    "Maintains existing functionality",
+    "TypeScript types preserved"
+  ],
+  "deliverables": [
+    "src/components/dashboard/DashboardHeader.tsx"
+  ]
+}
