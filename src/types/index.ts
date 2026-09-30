@@ -77,6 +77,11 @@ export interface SetBudgetInput {
   year: number;
 }
 
+export interface BudgetPeriod {
+  month: number;
+  year: number;
+}
+
 export type SessionUser = import("@/lib/session").SessionUser;
 
 export interface UserPreferences {

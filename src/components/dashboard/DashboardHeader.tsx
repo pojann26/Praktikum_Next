@@ -1,9 +1,11 @@
 "use client";
 
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { SessionUser } from "@/lib/session";
 import { logoutAction } from "@/app/actions/authActions";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { LogOut, ShieldCheck, Wallet } from "lucide-react";
+import { LayoutDashboard, LogOut, PiggyBank, ShieldCheck, Wallet } from "lucide-react";
 import { getInitials } from "@/lib/utils";
 import { ThemeToggle } from "@/components/preferences/ThemeToggle";
 
@@ -12,6 +14,7 @@ interface DashboardHeaderProps {
 }
 
 export function DashboardHeader({ user }: DashboardHeaderProps) {
+  const pathname = usePathname();
   const { scrollY } = useScroll();
   const headerBg = useTransform(
     scrollY,
@@ -62,6 +65,20 @@ export function DashboardHeader({ user }: DashboardHeaderProps) {
             </span>
             <span className="text-sm text-zinc-300">{user.email}</span>
           </div>
+          <nav className="hidden items-center gap-1 rounded-full border border-white/10 bg-white/5 p-1 md:flex">
+            <NavTab
+              href="/dashboard"
+              label="Dashboard"
+              icon={<LayoutDashboard size={14} />}
+              active={pathname === "/dashboard"}
+            />
+            <NavTab
+              href="/budget"
+              label="Budget"
+              icon={<PiggyBank size={14} />}
+              active={pathname.startsWith("/budget")}
+            />
+          </nav>
           <ThemeToggle />
           <form action={logoutAction}>
             <motion.button
@@ -117,6 +134,29 @@ export function UserSessionCard({ user }: UserSessionCardProps) {
         </div>
       </div>
     </motion.section>
+  );
+}
+
+interface NavTabProps {
+  href: string;
+  label: string;
+  icon: React.ReactNode;
+  active: boolean;
+}
+
+function NavTab({ href, label, icon, active }: NavTabProps) {
+  return (
+    <Link
+      href={href}
+      className={`relative flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-medium transition-colors
+        ${active
+          ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30"
+          : "text-zinc-400 hover:text-white hover:bg-white/5"
+        }`}
+    >
+      {icon}
+      <span>{label}</span>
+    </Link>
   );
 }
 
