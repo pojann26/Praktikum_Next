@@ -44,64 +44,54 @@ export function FinancialWidget({ summary }: FinancialWidgetProps) {
 
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      <GlowCard glow="rgba(20, 184, 166, 0.22)" delay={0.1}>
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2 text-teal-300">
-              <Wallet size={17} strokeWidth={1.75} />
-              <h3 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400">
-                Saldo Awal
-              </h3>
-            </div>
-            <p className={`mt-4 text-3xl font-semibold tracking-tight ${summary.balance >= 0 ? "text-white" : "text-rose-300"}`}>
-              {formatCurrency(balance)}
-            </p>
+      <GlowCard glow="rgba(99, 102, 241, 0.35)" delay={0.1}>
+        <div className="mb-3 flex items-center justify-between">
+          <div className="flex items-center gap-2 text-indigo-300">
+            <Wallet size={18} />
+            <h3 className="text-sm font-semibold uppercase tracking-wider">Saldo Akhir</h3>
           </div>
           <span
-            className={`rounded-full border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider ${
+            className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
               summary.balance >= 0
-                ? "border-teal-400/20 bg-teal-400/10 text-teal-300"
-                : "border-rose-400/20 bg-rose-400/10 text-rose-300"
+                ? "bg-emerald-500/20 text-emerald-300"
+                : "bg-rose-500/20 text-rose-300"
             }`}
           >
             {summary.balance >= 0 ? "Surplus" : "Defisit"}
           </span>
         </div>
-        <p className="mt-2 text-xs text-slate-500">Pemasukan dikurangi pengeluaran</p>
-        <div className="mt-5 rounded-xl border border-white/[0.06] bg-slate-950/30 px-3 py-2">
-          <Sparkline
-            color={summary.balance >= 0 ? "#2dd4bf" : "#fb7185"}
-            points={buildSparkline(summary.totalIncome, summary.totalExpense)}
-          />
-        </div>
+        <p className={`text-3xl font-bold ${summary.balance >= 0 ? "text-white" : "text-rose-400"}`}>
+          {formatCurrency(balance)}
+        </p>
+        <p className="mt-2 text-xs text-zinc-500">Pemasukan dikurangi pengeluaran</p>
+        <Sparkline
+          color={summary.balance >= 0 ? "#818cf8" : "#fb7185"}
+          points={buildSparkline(summary.totalIncome, summary.totalExpense)}
+        />
       </GlowCard>
 
-      <GlowCard glow="rgba(20, 184, 166, 0.2)" delay={0.2}>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="flex size-8 items-center justify-center rounded-lg border border-teal-400/15 bg-teal-400/10 text-teal-300">
-              <ArrowUpRight size={17} strokeWidth={1.75} />
-            </span>
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400">Total Pemasukan</h3>
+      <GlowCard glow="rgba(16, 185, 129, 0.35)" delay={0.2}>
+        <div className="mb-3 flex items-center justify-between">
+          <div className="flex items-center gap-2 text-emerald-300">
+            <ArrowUpRight size={18} />
+            <h3 className="text-sm font-semibold uppercase tracking-wider">Total Pemasukan</h3>
           </div>
-          <ProgressRing value={incomeRatio} color="#2dd4bf" />
+          <ProgressRing value={incomeRatio} color="#34d399" />
         </div>
-        <p className="mt-6 text-3xl font-semibold tracking-tight text-teal-300">{formatCurrency(income)}</p>
-        <p className="mt-2 text-xs text-slate-500">Semua transaksi bertipe INCOME</p>
+        <p className="text-3xl font-bold text-emerald-400">{formatCurrency(income)}</p>
+        <p className="mt-2 text-xs text-zinc-500">Semua transaksi bertipe INCOME</p>
       </GlowCard>
 
-      <GlowCard glow="rgba(167, 139, 250, 0.16)" delay={0.3}>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="flex size-8 items-center justify-center rounded-lg border border-rose-400/15 bg-rose-400/10 text-rose-300">
-              <ArrowDownRight size={17} strokeWidth={1.75} />
-            </span>
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400">Total Pengeluaran</h3>
+      <GlowCard glow="rgba(244, 63, 94, 0.35)" delay={0.3}>
+        <div className="mb-3 flex items-center justify-between">
+          <div className="flex items-center gap-2 text-rose-300">
+            <ArrowDownRight size={18} />
+            <h3 className="text-sm font-semibold uppercase tracking-wider">Total Pengeluaran</h3>
           </div>
           <ProgressRing value={expenseRatio} color="#fb7185" />
         </div>
-        <p className="mt-6 text-3xl font-semibold tracking-tight text-rose-300">{formatCurrency(expense)}</p>
-        <p className="mt-2 text-xs text-slate-500">Semua transaksi bertipe EXPENSE</p>
+        <p className="text-3xl font-bold text-rose-400">{formatCurrency(expense)}</p>
+        <p className="mt-2 text-xs text-zinc-500">Semua transaksi bertipe EXPENSE</p>
       </GlowCard>
     </div>
   );

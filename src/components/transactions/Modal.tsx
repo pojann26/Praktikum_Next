@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface ModalProps {
@@ -34,7 +34,7 @@ export function Modal({ isOpen, onClose, children, title }: ModalProps) {
           className="fixed inset-0 z-50 flex items-center justify-center"
         >
           <div
-            className="absolute inset-0 bg-black/60 backdrop-blur-md"
+            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
             onClick={onClose}
           />
 
@@ -43,13 +43,13 @@ export function Modal({ isOpen, onClose, children, title }: ModalProps) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 50 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
-            className="glass-card relative z-10 w-full max-w-2xl mx-4 rounded-2xl border border-white/10 bg-zinc-950/60 p-6 shadow-2xl backdrop-blur-xl"
+            className="relative z-10 w-full max-w-2xl mx-4 rounded-2xl border border-white/10 bg-zinc-950/90 p-6 shadow-2xl backdrop-blur-xl"
           >
             <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-6">
               <h2 className="text-xl font-bold text-white">{title}</h2>
               <button
                 onClick={onClose}
-                className="rounded-lg p-2 text-zinc-400 transition hover:bg-white/10 hover:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+                className="rounded-lg p-2 text-slate-400 transition hover:bg-white/10 hover:text-white"
               >
                 <svg
                   className="h-5 w-5"
@@ -98,7 +98,7 @@ export function DeleteConfirmModal({
         <div className="flex gap-3">
           <button
             onClick={onClose}
-            className="flex-1 rounded-xl border border-indigo-400/30 bg-indigo-500/10 px-5 py-3 font-semibold text-indigo-100 transition hover:bg-indigo-500/20 focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+            className="flex-1 rounded-xl border border-white/20 bg-white/[0.06] px-5 py-3 font-semibold text-white transition hover:bg-white/10"
           >
             Batal
           </button>
@@ -107,7 +107,7 @@ export function DeleteConfirmModal({
               onConfirm();
               onClose();
             }}
-            className="flex-1 rounded-xl bg-gradient-to-r from-rose-600 to-pink-600 px-5 py-3 font-semibold text-white transition hover:from-rose-700 hover:to-pink-700 focus:outline-none focus:ring-2 focus:ring-rose-500/50 shadow-lg shadow-rose-500/25"
+            className="flex-1 rounded-xl bg-red-600 px-5 py-3 font-semibold text-white transition hover:bg-red-700"
           >
             Hapus
           </button>
