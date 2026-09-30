@@ -1,0 +1,32 @@
+{
+  "id": "dashboard-redesign-03",
+  "seq": "03",
+  "title": "Redesign DashboardHeader with greeting, email badge, and logout button",
+  "status": "pending",
+  "depends_on": ["01", "02"],
+  "parallel": false,
+  "suggested_agent": "OpenFrontendSpecialist",
+  "context_files": [
+    "AGENTS.md",
+    "README.md",
+    "src/components/README.md",
+    ".opencode/context/ui/web/ui-styling-standards.md",
+    ".opencode/context/core/workflows/design-iteration-overview.md",
+    ".opencode/context/core/workflows/design-iteration-stage-implementation.md"
+  ],
+  "reference_files": [
+    "src/components/dashboard/DashboardHeader.tsx"
+  ],
+  "acceptance_criteria": [
+    "Left side displays greeting with 'Hello. [Username]' and sun emoji",
+    "Right side shows user email badge, notification bell icon, logout button",
+    "Styling matches glassmorphism design with proper spacing",
+    "Uses teal/purple accent colors appropriately",
+    "Component maintains existing functionality (logout, notifications)",
+    "TypeScript types preserved",
+    "Responsive design works on mobile and desktop"
+  ],
+  "deliverables": [
+    "src/components/dashboard/DashboardHeader.tsx"
+  ]
+}

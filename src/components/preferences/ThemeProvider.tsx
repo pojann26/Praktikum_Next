@@ -1,7 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import { UserPreferences } from "@/types";
+import { createContext, useContext, useState, type ReactNode } from "react";
 
 interface ThemeContextType {
   theme: "light" | "dark";
@@ -36,20 +35,12 @@ interface ThemeProviderProps {
 }
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<"light" | "dark">("dark");
-  const [language, setLanguageState] = useState<"id" | "en">("id");
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    const savedTheme = (getCookie(THEME_COOKIE_NAME) as "light" | "dark") || "dark";
-    const savedLanguage = (getCookie(LANGUAGE_COOKIE_NAME) as "id" | "en") || "id";
-
-    setTheme(savedTheme);
-    setLanguageState(savedLanguage);
-    setMounted(true);
-
-    document.documentElement.classList.toggle("dark", savedTheme === "dark");
-  }, []);
+  const [theme, setTheme] = useState<"light" | "dark">(() =>
+    (getCookie(THEME_COOKIE_NAME) as "light" | "dark") || "dark"
+  );
+  const [language, setLanguageState] = useState<"id" | "en">(() =>
+    (getCookie(LANGUAGE_COOKIE_NAME) as "id" | "en") || "id"
+  );
 
   const toggleTheme = () => {
     const newTheme = theme === "dark" ? "light" : "dark";
@@ -62,10 +53,6 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     setLanguageState(lang);
     setCookie(LANGUAGE_COOKIE_NAME, lang);
   };
-
-  if (!mounted) {
-    return <>{children}</>;
-  }
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme, language, setLanguage }}>

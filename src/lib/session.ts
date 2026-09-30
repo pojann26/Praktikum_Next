@@ -6,7 +6,7 @@ const SECRET_KEY = new TextEncoder().encode(
   process.env.JWT_SECRET || "default_super_secret_jwt_key_nextjs_praktikum_2026"
 );
 
-export interface UserSessionPayload {
+export interface SessionUser {
   userId: string;
   email: string;
   name: string;
@@ -16,7 +16,7 @@ export interface UserSessionPayload {
  * Creates a signed JWT session token.
  */
 export async function createSessionToken(
-  payload: UserSessionPayload
+  payload: SessionUser
 ): Promise<string> {
   return new SignJWT({ ...payload })
     .setProtectedHeader({ alg: "HS256" })
@@ -30,7 +30,7 @@ export async function createSessionToken(
  */
 export async function verifySessionToken(
   token: string
-): Promise<UserSessionPayload | null> {
+): Promise<SessionUser | null> {
   try {
     const { payload } = await jwtVerify(token, SECRET_KEY);
     return {
@@ -68,7 +68,7 @@ export async function deleteSessionCookie(): Promise<void> {
 /**
  * Retrieves and validates current logged-in user session from cookies.
  */
-export async function getSession(): Promise<UserSessionPayload | null> {
+export async function getSession(): Promise<SessionUser | null> {
   const cookieStore = await cookies();
   const sessionToken = cookieStore.get(SESSION_COOKIE_NAME)?.value;
   if (!sessionToken) return null;

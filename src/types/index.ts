@@ -47,13 +47,9 @@ export interface TransactionFilters {
   endDate?: Date;
 }
 
-export interface SessionUser {
-  id: string;
-  name: string;
-  email: string;
-}
+export type SessionUser = import("@/lib/session").SessionUser;
 
 export interface UserPreferences {
-  theme: "light" | "dark";
+  theme: "dark" | "light" | "system";
   language: "id" | "en";
 }

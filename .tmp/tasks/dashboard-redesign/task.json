@@ -1,0 +1,46 @@
+{
+  "id": "dashboard-redesign",
+  "name": "Dashboard Redesign - Dark Glassmorphism Theme",
+  "status": "active",
+  "objective": "Redesign finance dashboard with dark glassmorphism, teal/purple accents, and 2-column responsive grid layout",
+  "context_files": [
+    "AGENTS.md",
+    "README.md",
+    "src/components/README.md"
+  ],
+  "reference_files": [
+    "src/app/globals.css",
+    "src/app/dashboard/page.tsx",
+    "src/app/dashboard/TransactionManager.tsx",
+    "src/app/dashboard/PreferenceForm.tsx",
+    "src/components/dashboard/DashboardLayout.tsx",
+    "src/components/dashboard/DashboardHeader.tsx",
+    "src/components/dashboard/FinancialWidget.tsx",
+    "src/components/dashboard/RecentTransactions.tsx",
+    "src/components/transactions/TransactionTable.tsx",
+    "src/components/transactions/FilterTabs.tsx",
+    "src/components/transactions/Modal.tsx",
+    "src/components/transactions/TransactionForm.tsx",
+    "src/components/preferences/PreferencePanel.tsx",
+    "src/components/preferences/ThemeProvider.tsx",
+    "src/components/preferences/ThemeToggle.tsx"
+  ],
+  "exit_criteria": [
+    "Dashboard background updated to dark blue/navy with gradient",
+    "Top navigation redesigned with greeting, email badge, logout button",
+    "Profile card displays user info with transaction snippets",
+    "Security card with teal accent positioned on right",
+    "Financial widgets updated with new styling and charts",
+    "Transaction table redesigned with new styling",
+    "Cookie Settings panel repositioned to right sidebar",
+    "Color accents changed to teal/purple scheme throughout",
+    "Cards have consistent glassmorphism with proper borders",
+    "Layout matches 2-column responsive grid",
+    "Build succeeds with no TypeScript errors",
+    "No functionality broken or changed",
+    "Visual design matches reference image"
+  ],
+  "subtask_count": 11,
+  "completed_count": 0,
+  "created_at": "2026-09-30T08:56:29.191Z"
+}

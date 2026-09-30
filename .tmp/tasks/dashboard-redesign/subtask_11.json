@@ -1,0 +1,29 @@
+{
+  "id": "dashboard-redesign-11",
+  "seq": "11",
+  "title": "Test and validate build with no TypeScript errors",
+  "status": "pending",
+  "depends_on": ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10"],
+  "parallel": false,
+  "suggested_agent": "TestEngineer",
+  "context_files": [
+    "README.md"
+  ],
+  "reference_files": [
+    "package.json",
+    "tsconfig.json"
+  ],
+  "acceptance_criteria": [
+    "Build command succeeds without errors",
+    "No TypeScript compilation errors",
+    "All components render without runtime errors",
+    "Dashboard loads successfully at /dashboard route",
+    "All existing functionality works (login, logout, transactions, preferences)",
+    "Visual design matches reference image",
+    "Responsive design works on mobile and desktop breakpoints",
+    "No console errors in browser"
+  ],
+  "deliverables": [
+    "Build output verification report"
+  ]
+}

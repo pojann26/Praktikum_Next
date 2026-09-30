@@ -1,0 +1,36 @@
+{
+  "id": "dashboard-redesign-07",
+  "seq": "07",
+  "title": "Redesign PreferencePanel styling for right sidebar",
+  "status": "completed",
+  "agent_id": "coder-agent",
+  "started_at": "2026-09-30T09:11:00Z",
+  "completed_at": "2026-09-30T09:11:09Z",
+  "depends_on": ["01", "02"],
+  "parallel": true,
+  "suggested_agent": "OpenFrontendSpecialist",
+  "context_files": [
+    "AGENTS.md",
+    "README.md",
+    "src/components/README.md",
+    ".opencode/context/ui/web/ui-styling-standards.md",
+    ".opencode/context/core/workflows/design-iteration-overview.md",
+    ".opencode/context/core/workflows/design-iteration-stage-implementation.md"
+  ],
+  "reference_files": [
+    "src/components/preferences/PreferencePanel.tsx"
+  ],
+  "acceptance_criteria": [
+    "Panel titled 'Cookie Settings' or similar",
+    "Theme and language dropdowns styled with glassmorphism",
+    "Save button styled with teal/purple accent",
+    "Card background uses semi-transparent dark glass effect",
+    "Rounded borders and proper padding applied",
+    "Component positioned for right sidebar",
+    "Maintains existing functionality (theme toggle, language selection)",
+    "TypeScript types preserved"
+  ],
+  "deliverables": [
+    "src/components/preferences/PreferencePanel.tsx"
+  ]
+}
