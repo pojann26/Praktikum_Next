@@ -9,7 +9,7 @@
 | No | Peran / Jabatan | Nama Lengkap | NIM | Tanggung Jawab Utama |
 |:--:|:---|:---|:---:|:---|
 | 1 | **Project Manager (PM)** | **Quinta Aurabiansyah** | 24060124120016 | Manajemen proyek, delegasi tugas, manajemen branching Git, review Pull Request (PR), pengujian End-to-End, dan integrasi akhir. |
-| 2 | **Programmer 1** | **Fauzan (pojann26)** | *[NIM]* | Modul Autentikasi, Session Management, Cookies, dan Middleware Route Protection. |
+| 2 | **Programmer 1** | **Fauzan (pojann26)** | 24060124140139 | Modul Autentikasi, Session Management, Cookies, dan Middleware Route Protection. |
 | 3 | **Programmer 2** | **Naufal Dwi Yusmawan** | 24060124130075 | Modul Manajemen Transaksi (CRUD), Filter Transaksi, Server Actions, dan Database Query (Prisma). |
 | 4 | **Programmer 3** | **Aditya Sultonul Ulya** | 24060124120006 | Modul Dashboard, Ringkasan Saldo/Keuangan, Komponen UI/UX interaktif, dan Manajemen Preferensi Pengguna. |
 
